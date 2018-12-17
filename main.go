@@ -75,9 +75,11 @@ func main() {
 		// We want to put the files in a directory of the month it was last modified in the formal {year}-{month}
 		// if it doesn't exist, we create the destination directory
 		destDirName := fmt.Sprintf("%v/%v-%v", directory, f.ModTime().Year(), f.ModTime().Month())
-		if _, err := os.Stat(destDirName); os.IsNotExist(err) {
-			if err := os.Mkdir(destDirName, os.ModeDir|0777); err != nil {
-				log.Fatal(err.Error())
+		if !dryRun {
+			if _, err := os.Stat(destDirName); os.IsNotExist(err) {
+				if err := os.Mkdir(destDirName, os.ModeDir|0777); err != nil {
+					log.Fatal(err.Error())
+				}
 			}
 		}
 
